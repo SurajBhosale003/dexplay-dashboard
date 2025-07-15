@@ -170,7 +170,7 @@ export function MemberManagement({ onAction }: MemberManagementProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Retention Rates</CardTitle>
             <CardDescription>Member retention by period</CardDescription>
@@ -185,7 +185,7 @@ export function MemberManagement({ onAction }: MemberManagementProps) {
               </BarChart>
             </ChartContainer>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Member List */}

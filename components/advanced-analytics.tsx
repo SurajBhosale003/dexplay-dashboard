@@ -209,7 +209,7 @@ export function AdvancedAnalytics() {
         </Card>
 
         {/* Peak Hours Radial Chart */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Peak Hours Distribution</CardTitle>
             <CardDescription>Usage intensity throughout the day</CardDescription>
@@ -225,10 +225,10 @@ export function AdvancedAnalytics() {
               </ResponsiveContainer>
             </ChartContainer>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Court Utilization Treemap */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Court Utilization Map</CardTitle>
             <CardDescription>Visual representation of court usage</CardDescription>
@@ -240,7 +240,7 @@ export function AdvancedAnalytics() {
               </ResponsiveContainer>
             </ChartContainer>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Real-time Metrics */}

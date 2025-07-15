@@ -180,7 +180,7 @@ export function OverviewCharts() {
                     cy="50%"
                     outerRadius={120}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
                   >
                     {ageGroupData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -297,7 +297,7 @@ export function OverviewCharts() {
       </Card>
 
       {/* Fourth Row - Rush Hour Analysis */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Rush Hour Analysis</CardTitle>
           <CardDescription>Court usage throughout the day</CardDescription>
@@ -314,10 +314,10 @@ export function OverviewCharts() {
             </ResponsiveContainer>
           </ChartContainer>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Fifth Row - Court Popularity Chart */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Court Popularity & Revenue</CardTitle>
           <CardDescription>Performance comparison across different courts</CardDescription>
@@ -339,7 +339,7 @@ export function OverviewCharts() {
             </ResponsiveContainer>
           </ChartContainer>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   )
 }

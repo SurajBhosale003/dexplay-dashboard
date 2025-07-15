@@ -96,9 +96,9 @@ export function CourtManagement({ onAction }: CourtManagementProps) {
   }))
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 items-center">
       {/* Court Analytics */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-2 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Court Type Distribution</CardTitle>
@@ -125,7 +125,7 @@ export function CourtManagement({ onAction }: CourtManagementProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Court Utilization vs Revenue</CardTitle>
             <CardDescription>Performance comparison across courts</CardDescription>
@@ -141,7 +141,7 @@ export function CourtManagement({ onAction }: CourtManagementProps) {
               </BarChart>
             </ChartContainer>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Court Grid */}
