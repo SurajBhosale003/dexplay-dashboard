@@ -15,6 +15,8 @@ import { CompetitionSection } from "@/components/competition-section"
 import { ActionModals } from "@/components/action-modals"
 import { AdvancedAnalytics } from "@/components/advanced-analytics"
 import { MemberManagement } from "@/components/member-management"
+import fulllogo from "@/public/namelogo-white.png"
+import Image from "next/image"
 
 export default function SportsDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -84,10 +86,10 @@ export default function SportsDashboard() {
       <div className="border-b">
         <div className="flex h-16 items-center px-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-white" />
+            <div className="w-12 h-8 rounded-lg flex items-center justify-center" style={{width: "230px", height: "105px"}}>
+              <Image src={fulllogo} width={50} height={50} className="object-cover w-full h-full" alt="logo" />
             </div>
-            <h1 className="text-xl font-bold">Dexplay Dashboard</h1>
+            {/* <h1 className="text-xl font-bold">Dexplay Dashboard</h1> */}
           </div>
         </div>
       </div>
