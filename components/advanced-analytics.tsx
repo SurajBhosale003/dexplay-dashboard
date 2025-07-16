@@ -375,7 +375,7 @@ export function AdvancedAnalytics() {
               Send Maintenance Alert
             </Button>
             <Button 
-              className="w-full text-white hover:opacity-90" 
+              className="w-full text-black hover:opacity-90" 
               style={{ backgroundColor: "#D7ee34" }}
               onClick={() => setBulkDialogOpen(true)}
             >
