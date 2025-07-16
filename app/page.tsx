@@ -87,7 +87,7 @@ export default function SportsDashboard() {
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <Trophy className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold">SportsCourt Pro</h1>
+            <h1 className="text-xl font-bold">Dexplay Dashboard</h1>
           </div>
         </div>
       </div>
@@ -165,7 +165,7 @@ export default function SportsDashboard() {
                     ))}
                   </div>
                   <Button
-                    className="w-full mt-4 bg-black text-white hover:bg-gray-800"
+                    className="bg-black text-white hover:bg-[#D7EE34] hover:text-black w-full h-full"
                     onClick={() => setShowModal("bookings")}
                   >
                     View All Bookings

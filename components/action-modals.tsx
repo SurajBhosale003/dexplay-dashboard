@@ -140,7 +140,7 @@ export function ActionModals({ activeModal, onClose }: ActionModalsProps) {
           />
         </div>
         <div className="flex space-x-2 pt-4">
-          <Button type="submit" className="flex-1 bg-black text-white hover:bg-gray-800">
+          <Button type="submit" className="bg-black text-white hover:bg-[#D7EE34] hover:text-black flex-1">
             Confirm Booking
           </Button>
           <Button type="button" variant="outline" onClick={onClose}>
@@ -315,10 +315,10 @@ export function ActionModals({ activeModal, onClose }: ActionModalsProps) {
           />
         </div>
         <div className="flex space-x-2 pt-4">
-          <Button type="submit" className="flex-1 bg-black text-white hover:bg-gray-800">
+          <Button type="submit" className="bg-black text-white hover:bg-[#D7EE34] hover:text-black flex-1">
             Create Tournament
           </Button>
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" onClick={onClose} className="bg-white text-black ">
             Cancel
           </Button>
         </div>
@@ -401,8 +401,7 @@ export function ActionModals({ activeModal, onClose }: ActionModalsProps) {
                       {booking.status === "pending" && (
                         <Button
                           size="sm"
-                          style={{ backgroundColor: "#D7ee34" }}
-                          className="text-white hover:opacity-90"
+                          className="bg-black text-white hover:bg-[#D7EE34] hover:text-black"
                           onClick={() => onClose()}
                         >
                           Approve

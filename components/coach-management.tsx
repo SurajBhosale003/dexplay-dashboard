@@ -1,18 +1,160 @@
 "use client"
 
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { toast as sonnerToast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { BarChart, Bar, XAxis, YAxis, LineChart, Line, AreaChart, Area } from "recharts"
-import { Calendar, Star, MessageSquare, Phone } from "lucide-react"
+import { Calendar, Star, MessageSquare, Phone, X, Check } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { format } from "date-fns"
+import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+import { Toaster } from "@/components/ui/sonner"
 
 interface CoachManagementProps {
-  onAction: (action: string) => void
+  onAction?: (action: string) => void
 }
 
 export function CoachManagement({ onAction }: CoachManagementProps) {
+  const [action, setAction] = useState<string | null>(null)
+  const [selectedCoach, setSelectedCoach] = useState<any>(null)
+  const [selectedClass, setSelectedClass] = useState<any>(null)
+  const [messageContent, setMessageContent] = useState("")
+  const [date, setDate] = useState<Date>()
+  const [newCoach, setNewCoach] = useState({
+    name: "",
+    specialty: "",
+    experience: "",
+    email: "",
+    phone: "",
+  })
+  const [classForm, setClassForm] = useState({
+    coach: "",
+    type: "",
+    date: "",
+    time: "",
+    duration: "",
+    maxStudents: "",
+  })
+  const [payrollData, setPayrollData] = useState({
+    period: "",
+    paymentMethod: "Bank Transfer",
+  })
+  const [reviewData, setReviewData] = useState({
+    coach: "",
+    rating: "",
+    comments: "",
+  })
+
+  const handleAction = (actionType: string, data?: any) => {
+    setAction(actionType)
+    if (data) {
+      if (actionType === "message" || actionType === "schedule" || actionType === "call") {
+        setSelectedCoach(data)
+      } else if (actionType === "class-details") {
+        setSelectedClass(data)
+      }
+    }
+  }
+
+  const showSuccessToast = (message: string) => {
+    sonnerToast(
+      <div className="flex items-center">
+        <Check className="h-4 w-4 mr-2" />
+        <span>Success: {message}</span>
+      </div>
+    )
+  }
+
+  const handleSendMessage = () => {
+    // In a real app, you would send the message to the coach here
+    console.log(`Message to ${selectedCoach.name}: ${messageContent}`)
+    setMessageContent("")
+    setAction(null)
+    showSuccessToast(`Message sent to ${selectedCoach.name}`)
+  }
+
+  const handleAddCoach = () => {
+    // In a real app, you would save the new coach data here
+    console.log("Adding new coach:", newCoach)
+    setNewCoach({
+      name: "",
+      specialty: "",
+      experience: "",
+      email: "",
+      phone: "",
+    })
+    setAction(null)
+    showSuccessToast(`Coach ${newCoach.name} added successfully`)
+  }
+
+  const handleScheduleSession = () => {
+    // In a real app, you would save the session data here
+    console.log("Scheduling session with:", selectedCoach.name)
+    setAction(null)
+    showSuccessToast(`Session scheduled with ${selectedCoach.name}`)
+  }
+
+  const handleScheduleClass = () => {
+    // In a real app, you would save the class data here
+    console.log("Scheduling class:", classForm)
+    setClassForm({
+      coach: "",
+      type: "",
+      date: "",
+      time: "",
+      duration: "",
+      maxStudents: "",
+    })
+    setAction(null)
+    showSuccessToast("Class scheduled successfully")
+  }
+
+  const handleProcessPayroll = () => {
+    // In a real app, you would process payroll here
+    console.log("Processing payroll:", payrollData)
+    setPayrollData({
+      period: "",
+      paymentMethod: "Bank Transfer",
+    })
+    setAction(null)
+    showSuccessToast("Payroll processed successfully")
+  }
+
+  const handleSubmitReview = () => {
+    // In a real app, you would save the review data here
+    console.log("Submitting review:", reviewData)
+    setReviewData({
+      coach: "",
+      rating: "",
+      comments: "",
+    })
+    setAction(null)
+    showSuccessToast(`Performance review submitted for ${reviewData.coach}`)
+  }
+
   const coaches = [
     {
       id: 1,
@@ -24,8 +166,10 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
       totalStudents: 45,
       monthlyEarnings: 3200,
       availability: "Available",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752217768/People%20Profile/0bdbc7e1f21b705d25b7f81873810086_wurlmo.jpg?height=100&width=100",
       nextClass: "10:00 AM - Tennis Basics",
+      email: "sarah.johnson@example.com",
+      phone: "+1 (555) 123-4567",
     },
     {
       id: 2,
@@ -37,8 +181,10 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
       totalStudents: 32,
       monthlyEarnings: 2800,
       availability: "Busy",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752217771/People%20Profile/images_1_myv2ze.jpg?height=100&width=100",
       nextClass: "2:00 PM - Advanced Shooting",
+      email: "mike.chen@example.com",
+      phone: "+1 (555) 987-6543",
     },
     {
       id: 3,
@@ -50,8 +196,10 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
       totalStudents: 38,
       monthlyEarnings: 2600,
       availability: "Available",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752217662/People%20Profile/pm0476_w0_dfthen.avif?height=100&width=100",
       nextClass: "4:00 PM - Doubles Strategy",
+      email: "emma.wilson@example.com",
+      phone: "+1 (555) 456-7890",
     },
     {
       id: 4,
@@ -63,8 +211,10 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
       totalStudents: 24,
       monthlyEarnings: 2200,
       availability: "Available",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752217764/People%20Profile/depositphotos_223166560-stock-photo-young-handsome-indian-man-against_zv9wum.webp?height=100&width=100",
       nextClass: "6:00 PM - Beginner Squash",
+      email: "david.rodriguez@example.com",
+      phone: "+1 (555) 789-0123",
     },
   ]
 
@@ -95,8 +245,17 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
     { time: "8PM", classes: 4 },
   ]
 
+  const upcomingClasses = [
+    { time: "10:00 AM", class: "Tennis Basics", coach: "Sarah Johnson", students: 8, status: "confirmed" },
+    { time: "2:00 PM", class: "Advanced Basketball", coach: "Mike Chen", students: 12, status: "confirmed" },
+    { time: "4:00 PM", class: "Badminton Doubles", coach: "Emma Wilson", students: 6, status: "pending" },
+    { time: "6:00 PM", class: "Beginner Squash", coach: "David Rodriguez", students: 4, status: "confirmed" },
+  ]
+
   return (
     <div className="space-y-6">
+      <Toaster />
+
       {/* Coach Analytics */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
@@ -224,20 +383,20 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
               <div className="flex space-x-2">
                 <Button
                   size="sm"
-                  className="flex-1 bg-black text-white hover:bg-gray-800"
-                  onClick={() => onAction("schedule")}
+                 className="bg-black text-white hover:bg-[#D7EE34] hover:text-black flex-1"
+                  onClick={() => handleAction("schedule", coach)}
                 >
                   <Calendar className="w-4 h-4 mr-2" />
                   Schedule
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => onAction("message")}>
+                <Button size="sm" variant="outline" onClick={() => handleAction("message", coach)}>
                   <MessageSquare className="w-4 h-4" />
                 </Button>
                 <Button
                   size="sm"
                   style={{ backgroundColor: "#D7ee34" }}
-                  className="text-white hover:opacity-90"
-                  onClick={() => onAction("call")}
+                  className="text-black hover:opacity-90"
+                  onClick={() => handleAction("call", coach)}
                 >
                   <Phone className="w-4 h-4" />
                 </Button>
@@ -255,12 +414,7 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {[
-              { time: "10:00 AM", class: "Tennis Basics", coach: "Sarah Johnson", students: 8, status: "confirmed" },
-              { time: "2:00 PM", class: "Advanced Basketball", coach: "Mike Chen", students: 12, status: "confirmed" },
-              { time: "4:00 PM", class: "Badminton Doubles", coach: "Emma Wilson", students: 6, status: "pending" },
-              { time: "6:00 PM", class: "Beginner Squash", coach: "David Rodriguez", students: 4, status: "confirmed" },
-            ].map((classItem, index) => (
+            {upcomingClasses.map((classItem, index) => (
               <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <div className="text-center">
@@ -281,7 +435,7 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
                   >
                     {classItem.status}
                   </Badge>
-                  <Button size="sm" variant="outline" onClick={() => onAction("class-details")}>
+                  <Button size="sm" variant="outline" onClick={() => handleAction("class-details", classItem)} className="bg-white hover:bg-[#D7EE34] text-black">
                     View
                   </Button>
                 </div>
@@ -299,25 +453,484 @@ export function CoachManagement({ onAction }: CoachManagementProps) {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            <Button className="bg-black text-white hover:bg-gray-800" onClick={() => onAction("add-coach")}>
+            <Button className="bg-[#D7ee34] text-black " onClick={() => handleAction("add-coach")}>
               Add New Coach
             </Button>
-            <Button variant="outline" onClick={() => onAction("schedule-class")}>
+            <Button variant="outline" onClick={() => handleAction("schedule-class")}>
               Schedule Class
             </Button>
             <Button
               style={{ backgroundColor: "#D7ee34" }}
-              className="text-white hover:opacity-90"
-              onClick={() => onAction("payroll")}
+              className="text-black hover:opacity-90"
+              onClick={() => handleAction("payroll")}
             >
               Process Payroll
             </Button>
-            <Button variant="outline" onClick={() => onAction("performance-review")}>
+            <Button variant="outline" onClick={() => handleAction("performance-review")}>
               Performance Review
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Message Dialog */}
+      <Dialog open={action === "message"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Message to {selectedCoach?.name}</DialogTitle>
+            <DialogDescription>
+              Send a message to this coach. They'll receive it via email at {selectedCoach?.email}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="message">Your Message</Label>
+              <Textarea
+                id="message"
+                value={messageContent}
+                onChange={(e) => setMessageContent(e.target.value)}
+                placeholder="Type your message here..."
+                rows={5}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSendMessage} className="bg-black text-white hover:bg-[#D7EE34] hover:text-black">Send Message</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Schedule Dialog */}
+      <Dialog open={action === "schedule"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Schedule with {selectedCoach?.name}</DialogTitle>
+            <DialogDescription>
+              Schedule a new session with {selectedCoach?.name}, {selectedCoach?.specialty} coach.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="sessionType">Session Type</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select session type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="private">Private Lesson</SelectItem>
+                  <SelectItem value="group">Group Class</SelectItem>
+                  <SelectItem value="workshop">Workshop</SelectItem>
+                  <SelectItem value="training">Training Session</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className="w-full justify-start text-left font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <CalendarComponent
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="time">Time</Label>
+                <Input id="time" type="time" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="duration">Duration (minutes)</Label>
+                <Input id="duration" type="number" placeholder="60" />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleScheduleSession} className="bg-black text-white hover:bg-[#D7EE34] hover:text-black">Schedule Session</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Class Details Dialog */}
+      <Dialog open={action === "class-details"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedClass?.class} Details</DialogTitle>
+            <DialogDescription>
+              {selectedClass?.time} with Coach {selectedClass?.coach}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label>Class Information</Label>
+              <div className="p-4 border rounded-lg">
+                <div className="flex justify-between mb-2">
+                  <span className="text-muted-foreground">Time:</span>
+                  <span>{selectedClass?.time}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-muted-foreground">Coach:</span>
+                  <span>{selectedClass?.coach}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-muted-foreground">Students:</span>
+                  <span>{selectedClass?.students} enrolled</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <Badge
+                    className={
+                      selectedClass?.status === "confirmed"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-orange-100 text-orange-800"
+                    }
+                  >
+                    {selectedClass?.status}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+            {/* <div className="space-y-2">
+              <Label htmlFor="notes">Notes</Label>
+              <Textarea
+                id="notes"
+                placeholder="Add any notes about this class..."
+                rows={3}
+              />
+            </div> */}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add New Coach Dialog */}
+      <Dialog open={action === "add-coach"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Coach</DialogTitle>
+            <DialogDescription>
+              Fill in the details to add a new coach to your team.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                value={newCoach.name}
+                onChange={(e) => setNewCoach({...newCoach, name: e.target.value})}
+                placeholder="Coach's full name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="specialty">Specialty</Label>
+              <Input
+                id="specialty"
+                value={newCoach.specialty}
+                onChange={(e) => setNewCoach({...newCoach, specialty: e.target.value})}
+                placeholder="e.g., Tennis, Basketball"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="experience">Years of Experience</Label>
+              <Input
+                id="experience"
+                value={newCoach.experience}
+                onChange={(e) => setNewCoach({...newCoach, experience: e.target.value})}
+                placeholder="e.g., 5 years"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={newCoach.email}
+                  onChange={(e) => setNewCoach({...newCoach, email: e.target.value})}
+                  placeholder="coach@example.com"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  id="phone"
+                  value={newCoach.phone}
+                  onChange={(e) => setNewCoach({...newCoach, phone: e.target.value})}
+                  placeholder="+1 (555) 123-4567"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddCoach} className="bg-black text-white hover:bg-[#D7EE34] hover:text-black">Add Coach</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Schedule Class Dialog */}
+      <Dialog open={action === "schedule-class"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Schedule New Class</DialogTitle>
+            <DialogDescription>
+              Create a new class session with one of your coaches.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="coach">Coach</Label>
+              <Select
+                value={classForm.coach}
+                onValueChange={(value) => setClassForm({...classForm, coach: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a coach" />
+                </SelectTrigger>
+                <SelectContent>
+                  {coaches.map((coach) => (
+                    <SelectItem key={coach.id} value={coach.name}>
+                      {coach.name} ({coach.specialty})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="type">Class Type</Label>
+              <Select
+                value={classForm.type}
+                onValueChange={(value) => setClassForm({...classForm, type: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select class type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="private">Private Lesson</SelectItem>
+                  <SelectItem value="group">Group Class</SelectItem>
+                  <SelectItem value="workshop">Workshop</SelectItem>
+                  <SelectItem value="training">Training Session</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Date & Time</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className="justify-start text-left font-normal"
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <CalendarComponent
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <Input type="time" value={classForm.time} onChange={(e) => setClassForm({...classForm, time: e.target.value})} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="duration">Duration (minutes)</Label>
+                <Input
+                  id="duration"
+                  type="number"
+                  value={classForm.duration}
+                  onChange={(e) => setClassForm({...classForm, duration: e.target.value})}
+                  placeholder="60"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="maxStudents">Max Students</Label>
+                <Input
+                  id="maxStudents"
+                  type="number"
+                  value={classForm.maxStudents}
+                  onChange={(e) => setClassForm({...classForm, maxStudents: e.target.value})}
+                  placeholder="10"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleScheduleClass} className="bg-black text-white hover:bg-[#D7EE34] hover:text-black">Schedule Class</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Process Payroll Dialog */}
+      <Dialog open={action === "payroll"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Process Payroll</DialogTitle>
+            <DialogDescription>
+              Run payroll for your coaching staff.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="period">Pay Period</Label>
+              <Select
+                value={payrollData.period}
+                onValueChange={(value) => setPayrollData({...payrollData, period: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select pay period" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="biweekly">Bi-weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="paymentMethod">Payment Method</Label>
+              <Select
+                value={payrollData.paymentMethod}
+                onValueChange={(value) => setPayrollData({...payrollData, paymentMethod: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select payment method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
+                  <SelectItem value="Check">Check</SelectItem>
+                  <SelectItem value="Direct Deposit">Direct Deposit</SelectItem>
+                  <SelectItem value="PayPal">PayPal</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Coaches Included</Label>
+              <div className="border rounded-lg p-4">
+                {coaches.map((coach) => (
+                  <div key={coach.id} className="flex items-center justify-between py-2">
+                    <div className="flex items-center space-x-3">
+                      <input type="checkbox" id={`coach-${coach.id}`} className="h-4 w-4" defaultChecked />
+                      <label htmlFor={`coach-${coach.id}`}>{coach.name}</label>
+                    </div>
+                    <span>${coach.monthlyEarnings}</span>
+                  </div>
+                ))}
+                <div className="flex justify-between font-bold pt-2 mt-2 border-t">
+                  <span>Total</span>
+                  <span>${coaches.reduce((sum, coach) => sum + coach.monthlyEarnings, 0)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleProcessPayroll} className="bg-black text-white hover:bg-[#D7EE34] hover:text-black">Process Payroll</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Performance Review Dialog */}
+      <Dialog open={action === "performance-review"} onOpenChange={(open) => !open && setAction(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Coach Performance Review</DialogTitle>
+            <DialogDescription>
+              Submit a performance review for one of your coaches.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="reviewCoach">Coach</Label>
+              <Select
+                value={reviewData.coach}
+                onValueChange={(value) => setReviewData({...reviewData, coach: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a coach" />
+                </SelectTrigger>
+                <SelectContent>
+                  {coaches.map((coach) => (
+                    <SelectItem key={coach.id} value={coach.name}>
+                      {coach.name} ({coach.specialty})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="rating">Rating</Label>
+              <Select
+                value={reviewData.rating}
+                onValueChange={(value) => setReviewData({...reviewData, rating: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a rating" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="5">5 - Excellent</SelectItem>
+                  <SelectItem value="4">4 - Very Good</SelectItem>
+                  <SelectItem value="3">3 - Good</SelectItem>
+                  <SelectItem value="2">2 - Needs Improvement</SelectItem>
+                  <SelectItem value="1">1 - Poor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="comments">Comments</Label>
+              <Textarea
+                id="comments"
+                value={reviewData.comments}
+                onChange={(e) => setReviewData({...reviewData, comments: e.target.value})}
+                placeholder="Provide detailed feedback..."
+                rows={5}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAction(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmitReview} className="bg-black text-white hover:bg-[#D7EE34] hover:text-black">Submit Review</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

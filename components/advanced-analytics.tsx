@@ -459,6 +459,7 @@ export function AdvancedAnalytics() {
               type="button" 
               onClick={() => handleSendMessage("emergency")}
               disabled={!subject || !message || (!sendToAll && selectedMembers.length === 0)}
+              className="bg-black text-white hover:bg-[#D7EE34] hover:text-black"
             >
               <Send className="mr-2 h-4 w-4" /> Send Notification
             </Button>
@@ -533,6 +534,7 @@ export function AdvancedAnalytics() {
               type="button" 
               onClick={() => handleSendMessage("maintenance")}
               disabled={!subject || !message || (!sendToAll && selectedMembers.length === 0)}
+              className="bg-black text-white hover:bg-[#D7EE34] hover:text-black"
             >
               <Send className="mr-2 h-4 w-4" /> Send Alert
             </Button>
@@ -607,7 +609,7 @@ export function AdvancedAnalytics() {
               type="button" 
               onClick={() => handleSendMessage("bulk")}
               disabled={!subject || !message || (!sendToAll && selectedMembers.length === 0)}
-              style={{ backgroundColor: "#D7ee34" }}
+              className="bg-black text-white hover:bg-[#D7EE34] hover:text-black"
             >
               <Send className="mr-2 h-4 w-4" /> Send Notification
             </Button>
@@ -688,6 +690,7 @@ export function AdvancedAnalytics() {
               type="button" 
               onClick={() => handleSendMessage("report")}
               disabled={!reportType || (!sendToAll && selectedMembers.length === 0)}
+              className="bg-black text-white hover:bg-[#D7EE34] hover:text-black"
             >
               <Send className="mr-2 h-4 w-4" /> Generate & Send Report
             </Button>
